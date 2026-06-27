@@ -1,0 +1,42 @@
+version: '3.8'
+
+# ============================================================================
+# DOCKER COMPOSE ENTERPRISE PRODUCTION RUNTIME CONFIGURATION
+# ============================================================================
+
+services:
+  one-piece-wiki:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: onepiecefanwiki:production
+    container_name: onepiece_wiki_prod
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://gorosei:marygeoisepass@ep-calm-sea-123456.us-east-1.aws.neon.tech/onepiece?sslmode=require
+      - NEXTAUTH_URL=https://onepiecefanwiki.grandline
+      - NEXTAUTH_SECRET=ultra-secure-gorosei-one-piece-secret-key-2026
+      - GOOGLE_CLIENT_ID=prod_google_client_id
+      - GOOGLE_CLIENT_SECRET=prod_google_client_secret
+      - GITHUB_CLIENT_ID=prod_github_client_id
+      - GITHUB_CLIENT_SECRET=prod_github_client_secret
+      - DISCORD_CLIENT_ID=prod_discord_client_id
+      - DISCORD_CLIENT_SECRET=prod_discord_client_secret
+    networks:
+      - grandline_network
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+networks:
+  grandline_network:
+    driver: bridge
